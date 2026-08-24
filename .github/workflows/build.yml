@@ -1,4 +1,4 @@
-name: Build Android APK
+name: Build Game
 
 on:
   push:
@@ -13,17 +13,17 @@ jobs:
     - name: Checkout Code
       uses: actions/checkout@v4
 
-    - name: Setup Compiler
+    - name: Install Dependencies
       run: |
         sudo apt-get update
-        sudo apt-get install -y libsdl2-dev libgles2-mesa-dev
+        sudo apt-get install -y build-essential libsdl2-dev libgl1-mesa-dev libgles2-mesa-dev
 
-    - name: Compile C++ Game Source
+    - name: Compile Game
       run: |
-        g++ DinoGame3D.cpp -o dino_game -lSDL2 -lGLESv2
+        g++ DinoGame3D.cpp -o dino_game -lSDL2 -lGLESv1_CM -lGL
 
-    - name: Package Output File
+    - name: Upload Game Executable
       uses: actions/upload-artifact@v4
       with:
-        name: DinoGame-Build
+        name: DinoGame-Linux-Build
         path: dino_game
