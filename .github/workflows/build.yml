@@ -1,0 +1,29 @@
+name: Build Android APK
+
+on:
+  push:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v4
+
+    - name: Setup Compiler
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y libsdl2-dev libgles2-mesa-dev
+
+    - name: Compile C++ Game Source
+      run: |
+        g++ DinoGame3D.cpp -o dino_game -lSDL2 -lGLESv2
+
+    - name: Package Output File
+      uses: actions/upload-artifact@v4
+      with:
+        name: DinoGame-Build
+        path: dino_game
